@@ -13,7 +13,7 @@ int main(void)
     {
     {"My uncle's"},
     {"If seriously"},
-    {"He hath acquired"}
+    {'H', 'e', ' ', 'h', 'a', 't', 'h', ' ', 'a', 'c', 'q', 'u', 'i', 'r', 'e', 'd'}
     };
 
     printf("%c\n", text[0][0]);
