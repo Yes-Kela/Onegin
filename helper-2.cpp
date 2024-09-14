@@ -1,8 +1,9 @@
 #include <stdio.h>
 const int height = 3;
-const int width = 4;
+const int width = 5;
 
 int compare_strings (char* first_string, char* second_string);
+int compare_char (char first_char, char second_char);
 
 int main(void)
 {
@@ -42,7 +43,24 @@ int main(void)
     */
 
     //printf("compare_strings = %d", compare_strings())
-    compare_strings(table, table + 5);
+
+    int a = 0, b = 1;
+    int what_is_bigger = compare_strings (table + a, table + b*width);
+    printf("first string: ");
+    for (int i = 0; i < width; i++)
+    {
+        printf("%c", *(table + a + i));
+    }
+    printf("\n");
+
+    printf("first string: ");
+    for (int i = 0; i < width; i++)
+    {
+        printf("%c", *(table + b*width + i));
+    }
+    printf("\n");
+
+    printf("%d string is bigger", what_is_bigger);
 
     return 0;
 }
@@ -53,19 +71,31 @@ int main(void)
 
 int compare_strings (char* first_string, char* second_string)            // передаем указатели на начала строк, т е на char-values
 {
-    int bigger = 1;
+    int bigger = 0;
 
     for (int i = 0; i < width; i++)
     {
+        /*
         printf("*(first_string + i) = %c\n", *(first_string + i));
         printf("*(second_string + i) = %c\n\n", *(second_string + i));
-        /*
-        if (compare_char (*(first_string + i) == 2)
-        {
-            bigger = 2;
-        }
         */
+        if (compare_char (*(first_string + i), *(second_string + i)) != bigger)
+        {
+            bigger = compare_char (*(first_string + i), *(second_string + i));
+            break;
+        }
     }
 
     return bigger;
+}
+
+
+int compare_char (char first_char, char second_char)
+{
+    if (first_char > second_char)
+        return 1;
+    else if (first_char < second_char)
+        return 2;
+    else
+        return 0;
 }
