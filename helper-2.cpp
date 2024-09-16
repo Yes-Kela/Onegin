@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <assert.h>
 #define PRINTFS
+
 const int height = 3;
 const int width = 5;
 
@@ -64,15 +66,17 @@ int main(void)
         }
         printf("\n");
     }
+
     return 0;
 }
 
 
-// создаём функцию, сравнивающую две строки: compare_strings
-// внутри себя она вызывает функцию сравнения ascii-кодов двух символов и пользуется её возвращающим значением
 
-int compare_strings (char* first_string, char* second_string)            // передаем указатели на начала строк, т е на char-values
+int compare_strings (char* first_string, char* second_string)
 {
+    assert ( first_string != NULL);
+    assert (second_string != NULL);
+
     int bigger = 0;
 
     for (int i = 0; i < width; i++)
@@ -105,6 +109,9 @@ int compare_char (char first_char, char second_char)
 
 void exchange_strings (char* start_first_string, char* start_second_string)
 {
+    assert ( start_first_string != NULL);
+    assert (start_second_string != NULL);
+
     for (int i = 0; i < width; i++)
     {
         exchange_char (start_first_string + i, start_second_string + i);
@@ -113,6 +120,9 @@ void exchange_strings (char* start_first_string, char* start_second_string)
 
 void exchange_char (char* first_char, char* second_char)
 {
+    assert ( first_char != NULL);
+    assert (second_char != NULL);
+
     char   auxiliary = *first_char;
         * first_char = *second_char;
         *second_char =  auxiliary;
@@ -121,6 +131,8 @@ void exchange_char (char* first_char, char* second_char)
 
 void bubble_sort (char* start)
 {
+    assert (start != NULL);
+
     for (int active_part = height - 1; active_part > 0; active_part--)
     {
         for (int index = 0; index < active_part; index++)
