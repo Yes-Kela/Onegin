@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <assert.h>
+#include <ctype.h>
+#include <stdlib.h>
+
 #define PRINTFS
 
-const int height = 3;
-const int width = 5;
+const int height = 7;
+const int width = 17;
 
 int compare_strings (char* first_string, char* second_string);
 int compare_char (char first_char, char second_char);
@@ -14,7 +17,15 @@ void bubble_sort (char* start);
 int main(void)
 {
     char table[] =
-    {'H', 'e', 'l', 'l', '\0', 'H', 'e', 'l', 'k', '\0', 'H', 'e', 'l', 'a', '\0'};
+    {
+    'M', 'y', ' ', 'u', 'n', 'c', 'l', 'e',  39, 's', '0', '0', '0', '0', '0', '0', '\0',
+    'I', 'f', ' ', 's', 'e', 'r', 'i', 'o', 'u', 's', 'l', 'y', '0', '0', '0', '0', '\0',
+    'H', 'e', ' ', 'h', 'a', 't', 'h', ' ', 'a', 'c', 'q', 'u', 'i', 'r', 'e', 'd', '\0',
+    'A', 'n', 'd', ' ', 'n', 'o', 't', 'h', 'i', 'n', 'g', '0', '0', '0', '0', '0', '\0',
+    'A', ' ', 'p', 'a', 'r', 'a', 'g', 'o', 'n', ' ', 'o', 'f', '0', '0', '0', '0', '\0',
+    'A', 'p', 'a', 'r', 'a', 'g', ' ', 'o', 'n', ' ', 'o', 'f', 'f', '0', '0', '0', '\0',
+    'A', 'P', 'A', 'r', 'a', 'g', ' ', 'o', 'N', ' ', 'o', 'F', '0', '0', '0', '0', '\0'
+    };
 
     // ןנטםעפû!!!
     #ifndef PRINTFS
@@ -78,6 +89,25 @@ int compare_strings (char* first_string, char* second_string)
     assert (second_string != NULL);
 
     int bigger = 0;
+    char*  first_string_cur = (char*) calloc (width, sizeof(char));
+    for (int j = 0, num_alpha = 0; j < width; j++)
+    {
+        if ( isalpha (*(first_string + j)) )
+        {
+            num_alpha++;
+            *(first_string_cur + num_alpha) = *(first_string + j);
+        }
+    }
+
+    char* second_string_cur = (char*) calloc (width, sizeof(char));
+    for (int j = 0, num_alpha = 0; j < width; j++)
+    {
+        if ( isalpha (*(second_string + j)) )
+        {
+            num_alpha++;
+            *(second_string_cur + num_alpha) = *(second_string + j);
+        }
+    }
 
     for (int i = 0; i < width; i++)
     {
@@ -85,12 +115,15 @@ int compare_strings (char* first_string, char* second_string)
         printf("*(first_string + i) = %c\n", *(first_string + i));
         printf("*(second_string + i) = %c\n\n", *(second_string + i));
         */
-        if (compare_char (*(first_string + i), *(second_string + i)) != bigger)
+        if (compare_char (*(first_string_cur + i), *(second_string_cur + i)) != bigger)
         {
-            bigger = compare_char (*(first_string + i), *(second_string + i));
+            bigger = compare_char (*(first_string_cur + i), *(second_string_cur + i));
             break;
         }
     }
+
+    free ( first_string_cur);
+    free (second_string_cur);
 
     return bigger;
 }
@@ -98,9 +131,9 @@ int compare_strings (char* first_string, char* second_string)
 
 int compare_char (char first_char, char second_char)
 {
-    if (first_char > second_char)
+    if (toupper(first_char) > toupper(second_char))
         return 1;
-    else if (first_char < second_char)
+    else if (toupper(first_char) < toupper(second_char))
         return 2;
     else
         return 0;
