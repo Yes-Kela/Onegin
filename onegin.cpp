@@ -9,44 +9,63 @@ const int height = 7;
 const int width = 38;
 const int textsize = 224;
 
+struct inform
+{
+    char* pointer;
+    int lenght;
+};
+
 int compare_strings (char* first_string, char* second_string);
 int compare_char (char first_char, char second_char);
 void exchange_strings (char* first_string, char* second_string);
 void exchange_char (char* start_first_string, char* start_second_string);
 void bubble_sort (char* start);
 
+void pointers_sort (char** pointers);
+int compare_pointers ();
+int exchange_pointers ();
+
+
 int main(void)
 {
+    struct inform lines[height];
+
     char table[] =
     "\"My uncle\'s goodness is extreme,\n"
     "If seriously he hath disease;\n"
-    "He hath acquired the worldТs esteem\n"
+    "He hath acquired the world\'s esteem\n"
     "And nothing more important sees;\n"
     "A paragon of virtue he!\n"
     "But what a nuisance it will be,\n"
     "Chained to his bedside night and day\n";
 
-    char* pointers[height] = {table};
+    lines[0].pointer = table;
     int num_of_ends = 1;
-    for (int i = 1; i < textsize; i++)
+    int counter = 1;
+
+    for (int i = 1; i <= textsize; i++)
     {
+        counter++;
         if (*(table + i) == '\n')
         {
-            *(pointers + num_of_ends) = table + (i + 1);
+            lines[num_of_ends].pointer = table + (i + 1);
+            lines[num_of_ends - 1].lenght = counter;
+            counter = 0;
 
-            assert (*(pointers + num_of_ends) != NULL);
+            assert (lines[num_of_ends].pointer != NULL);
             assert (num_of_ends <= height);
 
             num_of_ends ++;
         }
     }
 
+
+
+    printf("i    lines[i].pointer     *lines[i].pointer        lines[i].lenght\n");
     for (int i = 0; i < height; i++)
     {
-        printf("%d       %p                    %c\n", i, *(pointers + i), **(pointers + i));
+        printf("%d       %p               %c                     %d\n", i, lines[i].pointer , *lines[i].pointer, lines[i].lenght);
     }
-
-
     printf("\n");
 
 
@@ -101,6 +120,9 @@ int main(void)
         printf("\n");
     }
     */
+
+
+
     return 0;
 }
 
@@ -203,3 +225,26 @@ void bubble_sort (char* start)
         }
     }
 }
+
+/*
+void pointers_sort (char** pointers)            // указатель на указатель на char
+{
+    assert (pointers != NULL);
+    assert (*pointers != NULL);
+
+    for (int active_part = height - 1; active_part > 0; active_part--)
+    {
+        for (int index = 0; index < active_part; index++)
+        {
+            char*  first_string = *(*pointers + index);                   //  first_string - указатель на начало первой сравниваемой строки
+            char* second_string = *(*pointers + index + 1);               // second_string - указатель на начало второй сравниваемой строки
+            if (compare_strings (first_string, second_string) == 1)       // видимо, compare_strings должна принимать в качестве аргументов ещЄ и длины рассматриваемых строк
+            {
+                exchange_strings (first_string, second_string);
+            }
+            else { ; }
+        }
+    }
+
+}
+*/
