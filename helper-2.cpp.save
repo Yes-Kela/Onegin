@@ -5,9 +5,8 @@
 
 #define PRINTFS
 
-const int height = 7;
-const int width = 38;
-const int textsize = 93;
+const int height = 6;
+const int width = 17;
 
 int compare_strings (char* first_string, char* second_string);
 int compare_char (char first_char, char second_char);
@@ -17,47 +16,15 @@ void bubble_sort (char* start);
 
 int main(void)
 {
-    char table[] =            
-    "“My uncle’s goodness is extreme,\n"
-    "If seriously he hath disease;\n"
-    "He hath acquired the world’s esteem\n"
-    "And nothing more important sees;\n"
-    "A paragon of virtue he!\n";
-    "But what a nuisance it will be,\n"
-    "Chained to his bedside night and day\n";
-    
-    char* pointers[height] = {[0] = table};
-    //printf("*(pointers + i)           **(pointers + i)\n");
-    /*
-    for (int i = 0; i < height; i++)
+    char table[] =
     {
-        printf("%p                    \n", *(pointers + i), **(pointers + i));
-    }
-    */
-
-    int num_of_ends = 0;
-    for (int i = 0; i < textsize; i++)
-    {
-        if (*(table + i) == '\0')
-        {
-            *(pointers + num_of_ends) = table + (i - 1);
-
-            assert (*(pointers + num_of_ends) != NULL);
-            assert (num_of_ends <= height);
-
-            num_of_ends ++;
-        }
-    }
-    printf("***************************************************");
-    printf("*(pointers + i)           **(pointers + i)");
-    for (int i = 0; i < height; i++)
-    {
-        printf("%p                    %c\n", *(pointers + i), **(pointers + i));
-    }
-
-
-    printf("\n");
-
+    'M', 'y', ' ', 'u', 'n', 'c', 'l', 'e',  39, 's', '0', '0', '0', '0', '0', '0', '\0',
+    'I', 'f', ' ', 's', 'e', 'r', 'i', 'o', 'u', 's', 'l', 'y', '0', '0', '0', '0', '\0',
+    'H', 'e', ' ', 'h', 'a', 't', 'h', ' ', 'a', 'c', 'q', 'u', 'i', 'r', 'e', 'd', '\0',
+    'A', 'n', 'd', ' ', 'n', 'o', 't', 'h', 'i', 'n', 'g', '0', '0', '0', '0', '0', '\0',
+    'A', ' ', 'p', 'a', 'r', 'a', 'g', 'o', 'n', ' ', 'o', 'f', '0', '0', '0', '0', '\0',
+    'A', 'p', 'a', 'r', 'a', 'g', ' ', 'o', 'n', ' ', 'o', 'f', 'f', '0', '0', '0', '\0'
+    };
 
     // ïðèíòôû!!!
     #ifndef PRINTFS
@@ -99,7 +66,7 @@ int main(void)
 
         printf("%d string is bigger", what_is_bigger);
     #endif
-    /*
+
     bubble_sort (table);
     for (int i = 0; i < height; i++)
     {
@@ -109,7 +76,7 @@ int main(void)
         }
         printf("\n");
     }
-    */
+
     return 0;
 }
 
@@ -122,22 +89,20 @@ int compare_strings (char* first_string, char* second_string)
 
     int bigger = 0;
     char*  first_string_cur = (char*) calloc (width, sizeof(char));
-    for (int j = 0, num_alpha = 0; j < width; j++)
+    for (int j = 0, n; j < width; j++)
     {
         if ( isalpha (*(first_string + j)) )
         {
-            num_alpha++;
-            *(first_string_cur + num_alpha) = *(first_string + j);
+            *(first_string_cur + j) = *(first_string + j);
         }
     }
 
     char* second_string_cur = (char*) calloc (width, sizeof(char));
-    for (int j = 0, num_alpha = 0; j < width; j++)
+    for (int j = 0; j < width; j++)
     {
         if ( isalpha (*(second_string + j)) )
         {
-            num_alpha++;
-            *(second_string_cur + num_alpha) = *(second_string + j);
+            *(second_string_cur + j) = *(second_string + j);
         }
     }
 
@@ -163,9 +128,9 @@ int compare_strings (char* first_string, char* second_string)
 
 int compare_char (char first_char, char second_char)
 {
-    if (toupper(first_char) > toupper(second_char))
+    if (first_char > second_char)
         return 1;
-    else if (toupper(first_char) < toupper(second_char))
+    else if (first_char < second_char)
         return 2;
     else
         return 0;

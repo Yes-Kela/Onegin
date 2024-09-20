@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <assert.h>
+
+const int width = 3;
+
+void first_func (int* pointer1);
+void second_func (int* pointer2);
+
+int main(void)
+{
+    int arr[] = {100, 200, 300};
+    printf("arr: %p\n\n", arr);
+    first_func (arr);
+
+    
+    return 0;
+}
+
+void first_func (int* pointer1)
+{
+    assert (pointer1 != NULL);
+
+    printf("****************************\n");
+    printf("Zone of first_func\n");
+    printf(" pointer1: %p\n",  pointer1);
+    printf("*pointer1: %d\n", *pointer1);
+    printf("&pointer1: %p\n", &pointer1);
+    printf("****************************\n\n");
+
+    second_func (pointer1);
+}
+
+
+void second_func (int* pointer2)
+{
+    assert (pointer2 != NULL);
+
+    printf("\n****************************\n");
+    printf("Zone of second_func\n");
+    printf(" pointer2: %p\n",  pointer2);
+    printf("*pointer2: %d\n", *pointer2);
+    printf("&pointer2: %p\n", &pointer2);
+    printf("****************************\n\n");
+}

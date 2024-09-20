@@ -6,7 +6,8 @@
 #define PRINTFS
 
 const int height = 7;
-const int width = 17;
+const int width = 38;
+const int textsize = 224;
 
 int compare_strings (char* first_string, char* second_string);
 int compare_char (char first_char, char second_char);
@@ -17,15 +18,37 @@ void bubble_sort (char* start);
 int main(void)
 {
     char table[] =
+    "\"My uncle\'s goodness is extreme,\n"
+    "If seriously he hath disease;\n"
+    "He hath acquired the world’s esteem\n"
+    "And nothing more important sees;\n"
+    "A paragon of virtue he!\n"
+    "But what a nuisance it will be,\n"
+    "Chained to his bedside night and day\n";
+
+    char* pointers[height] = {table};
+    int num_of_ends = 1;
+    for (int i = 1; i < textsize; i++)
     {
-    'M', 'y', ' ', 'u', 'n', 'c', 'l', 'e',  39, 's', '0', '0', '0', '0', '0', '0', '\0',
-    'I', 'f', ' ', 's', 'e', 'r', 'i', 'o', 'u', 's', 'l', 'y', '0', '0', '0', '0', '\0',
-    'H', 'e', ' ', 'h', 'a', 't', 'h', ' ', 'a', 'c', 'q', 'u', 'i', 'r', 'e', 'd', '\0',
-    'A', 'n', 'd', ' ', 'n', 'o', 't', 'h', 'i', 'n', 'g', '0', '0', '0', '0', '0', '\0',
-    'A', ' ', 'p', 'a', 'r', 'a', 'g', 'o', 'n', ' ', 'o', 'f', '0', '0', '0', '0', '\0',
-    'A', 'p', 'a', 'r', 'a', 'g', ' ', 'o', 'n', ' ', 'o', 'f', 'f', '0', '0', '0', '\0',
-    'A', 'P', 'A', 'r', 'a', 'g', ' ', 'o', 'N', ' ', 'o', 'F', '0', '0', '0', '0', '\0'
-    };
+        if (*(table + i) == '\n')
+        {
+            *(pointers + num_of_ends) = table + (i + 1);
+
+            assert (*(pointers + num_of_ends) != NULL);
+            assert (num_of_ends <= height);
+
+            num_of_ends ++;
+        }
+    }
+
+    for (int i = 0; i < height; i++)
+    {
+        printf("%d       %p                    %c\n", i, *(pointers + i), **(pointers + i));
+    }
+
+
+    printf("\n");
+
 
     // ïðèíòôû!!!
     #ifndef PRINTFS
@@ -67,7 +90,7 @@ int main(void)
 
         printf("%d string is bigger", what_is_bigger);
     #endif
-
+    /*
     bubble_sort (table);
     for (int i = 0; i < height; i++)
     {
@@ -77,7 +100,7 @@ int main(void)
         }
         printf("\n");
     }
-
+    */
     return 0;
 }
 
