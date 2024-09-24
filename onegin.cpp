@@ -6,7 +6,7 @@
 #define PRINTFS
 
 const int height = 7;
-const int MAXWIDTH = 38;
+//const int MAXWIDTH = 38;
 const int textsize = 224;
 
 struct inform
@@ -59,11 +59,6 @@ int main(void)
         }
     }
 
-    struct inform* struct_pointer = &lines[0];
-
-    pointers_sort (struct_pointer);
-
-
     /*
     printf("i    lines[i].pointer     *lines[i].pointer        lines[i].lenght\n");
     for (int i = 0; i < height; i++)
@@ -71,7 +66,8 @@ int main(void)
         printf("%d       %p               %c                     %d\n", i, lines[i].pointer , *lines[i].pointer, lines[i].lenght);
     }
     printf("\n");
-    printf("%c\n", *lines[0].pointer);
+    printf("***********************************************************************");
+    printf("\n");
     */
 
     // ןנטםעפû!!!
@@ -126,13 +122,14 @@ int main(void)
     }
     */
 
+
+    pointers_sort (&lines[0]);
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < lines[i].lenght; j++)
         {
-            printf("%c", (*(lines[i].pointer) + j));
+            printf("%c", *((lines[i].pointer) + j));
         }
-        printf("\n");
     }
 
     printf("\n");
@@ -140,7 +137,7 @@ int main(void)
     return 0;
 }
 
-/*
+
 int compare_strings (char* first_string, char* second_string)
 {
     assert ( first_string != NULL);
@@ -235,7 +232,7 @@ void bubble_sort (char* start)
         }
     }
 }
-*/
+
 
 
 
@@ -257,6 +254,7 @@ void pointers_sort (struct inform * struct_pointer)
             {
                 exchange_pointers (struct_pointer + index, struct_pointer + index + 1);
             }
+
             else { ; }
         }
     }
