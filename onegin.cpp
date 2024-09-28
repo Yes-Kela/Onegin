@@ -7,11 +7,10 @@
 
 const int height = 7;
 //const int MAXWIDTH = 38;
-const int textsize = 224;
 
 struct inform
 {
-    char* pointer;
+    const char* pointer;
     int lenght;
 };
 
@@ -23,17 +22,18 @@ void bubble_sort (char* start);
 
 void pointers_sort (struct inform* struct_pointer);
 void exchange_pointers (struct inform* first_struct_pointer, struct inform* second_struct_pointer);
-int compare_pointers (const char* first_string, const char* second_string, int first_lenght, int second_lenght);
+int compare_pointers (const char* first_string, const char* second_string, int first_length, int second_length);
+void skip_non_letters (const char** char_ptr);
 
 
 int main(void)
 {
-    struct inform lines[height];
+    struct inform lines[height] = {};
 
-    char table[] =
-    "\"My uncle\'s goodness is extreme,\n"
+    const char table[] =
+    "\"My uncle's goodness is extreme,\n"
     "If seriously he hath disease;\n"
-    "He hath acquired the world\'s esteem\n"
+    "He hath acquired the world's esteem\n"
     "And nothing more important sees;\n"
     "A paragon of virtue he!\n"
     "But what a nuisance it will be,\n"
@@ -43,17 +43,21 @@ int main(void)
     int num_of_ends = 1;
     int counter = 1;
 
-    for (int i = 1; i <= textsize; i++)
+    for (unsigned int i = 1; *(table + i) != '\0'; i++)
     {
         counter++;
         if (*(table + i) == '\n')
         {
-            lines[num_of_ends].pointer = table + (i + 1);
+            if (*(table + i + 1) != '\0') {
+                lines[num_of_ends].pointer = table + (i + 1);
+                assert (num_of_ends < height);
+            }
+
             lines[num_of_ends - 1].lenght = counter;
             counter = 0;
 
             assert (lines[num_of_ends].pointer != NULL);
-            assert (num_of_ends <= height);
+
 
             num_of_ends ++;
         }
@@ -138,6 +142,7 @@ int main(void)
 }
 
 
+/*
 int compare_strings (char* first_string, char* second_string)
 {
     assert ( first_string != NULL);
@@ -183,16 +188,6 @@ int compare_strings (char* first_string, char* second_string)
     return bigger;
 }
 
-int compare_char (char first_char, char second_char)
-{
-    if (toupper(first_char) > toupper(second_char))
-        return 1;
-    else if (toupper(first_char) < toupper(second_char))
-        return 2;
-    else
-        return 0;
-}
-
 void exchange_strings (char* start_first_string, char* start_second_string)
 {
     assert ( start_first_string != NULL);
@@ -232,7 +227,7 @@ void bubble_sort (char* start)
         }
     }
 }
-
+*/
 
 
 
@@ -245,12 +240,12 @@ void pointers_sort (struct inform * struct_pointer)
     {
         for (int index = 0; index < active_part; index++)
         {
-            char*  first_string = (*(struct_pointer + index)).pointer;
-            char* second_string = (*(struct_pointer + index + 1)).pointer;
-            int first_lenght = (*(struct_pointer + index)).lenght;
-            int second_lenght = (*(struct_pointer + index + 1)).lenght;
+            const char*  first_string = (*(struct_pointer + index)).pointer;
+            const char* second_string = (*(struct_pointer + index + 1)).pointer;
+            int first_length = (*(struct_pointer + index)).lenght;
+            int second_length = (*(struct_pointer + index + 1)).lenght;
 
-            if (compare_pointers (first_string, second_string, first_lenght, second_lenght) == 1)
+            if (compare_pointers (first_string, second_string, first_length, second_length) < 0)  // если первая больше, то:
             {
                 exchange_pointers (struct_pointer + index, struct_pointer + index + 1);
             }
@@ -271,59 +266,63 @@ void exchange_pointers (struct inform* first_struct_pointer, struct inform* seco
     *second_struct_pointer = auxiliary;
 }
 
-int compare_pointers (const char* first_string, const char* second_string, int first_lenght, int second_lenght)
+int compare_pointers (const char* first_string, const char* second_string, int first_length, int second_length)
 {
     assert ( first_string != NULL);
     assert (second_string != NULL);
 
-    int bigger = 0;
-    int width = (first_lenght >= second_lenght) ? (first_lenght) : (second_lenght);
+    const char* first_char_ptr = first_string;
+    const char* second_char_ptr = second_string;
 
-    char*  first_string_cur = (char*) calloc (width, sizeof(char));
-    for (int j = 0, num_alpha = 0; j < first_lenght; j++)
-    {
-        if ( isalpha (*(first_string + j)) )
-        {
-            num_alpha++;
-            *(first_string_cur + num_alpha) = *(first_string + j);
-        }
-    }
+    //printf("first_char_ptr    first_char   second_char_ptr    second_char\n");
+    //printf(" %p       %c        %p      %c\n", first_char_ptr, *first_char_ptr, second_char_ptr, *second_char_ptr);
 
-    char* second_string_cur = (char*) calloc (width, sizeof(char));
-    for (int j = 0, num_alpha = 0; j < second_lenght; j++)
-    {
-        if ( isalpha (*(second_string + j)) )
-        {
-            num_alpha++;
-            *(second_string_cur + num_alpha) = *(second_string + j);
-        }
-    }
 
-    for (int i = 0; i < width; i++)
+    //printf(" %p       %c        %p      %c\n", first_char_ptr, *first_char_ptr, second_char_ptr, *second_char_ptr);
+
+    for (; first_char_ptr != first_string + first_length &&
+         second_char_ptr != second_string + second_length;
+         first_char_ptr++, second_char_ptr++)
     {
-        /*
-        printf("*(first_string + i) = %c\n", *(first_string + i));
-        printf("*(second_string + i) = %c\n\n", *(second_string + i));
-        */
-        if (compare_char (*(first_string_cur + i), *(second_string_cur + i)) != bigger)
-        {
-            bigger = compare_char (*(first_string_cur + i), *(second_string_cur + i));
+        skip_non_letters (&first_char_ptr);
+        skip_non_letters (&second_char_ptr);
+
+        if (first_char_ptr == first_string + first_length || second_char_ptr == second_string + second_length)
             break;
+
+        if (compare_char (*first_char_ptr, *second_char_ptr) != 0)
+        {
+            //printf("returned_value: %d\n", compare_char (*first_char_ptr, *second_char_ptr));
+
+            return (compare_char (*first_char_ptr, *second_char_ptr));     // возвращает >0, если вторая больше; <0 - иначе
         }
     }
 
-    free ( first_string_cur);
-    free (second_string_cur);
+    if (first_char_ptr == first_string + first_length)
+    {
+        //printf("returned_value: 1\n");
 
-    return bigger;
+        return 1;
+    }
+
+    //printf("returned_value: -1\n");
+
+    return -1;
 }
 
 int compare_char (char first_char, char second_char)
 {
-    if (toupper(first_char) > toupper(second_char))
-        return 1;
-    else if (toupper(first_char) < toupper(second_char))
-        return 2;
-    else
-        return 0;
+    return (toupper(second_char) - toupper(first_char));           // если первая больше, то <0, если вторая больше, то >0
+}
+
+
+void skip_non_letters (const char** ptr_to_char_ptr)
+{
+    assert (ptr_to_char_ptr != NULL);
+    assert (*ptr_to_char_ptr != NULL);
+
+    while (**ptr_to_char_ptr != '\n' && !isalpha (**ptr_to_char_ptr))
+    {
+        (*ptr_to_char_ptr)++;
+    }
 }
