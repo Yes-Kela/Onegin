@@ -1,14 +1,12 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-const int height = 7;
-
 struct inform
 {
     const char* pointer;
-    int lenght;
+    int length;
 };
 
-void SortPointers (struct inform* struct_pointer);
+void SortPointers (struct inform* struct_pointer, int height);
 
 #endif // MAIN_H

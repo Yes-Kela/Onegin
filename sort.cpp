@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "sort.h"
 
-void SortPointers (struct inform * struct_pointer)
+void SortPointers (struct inform * struct_pointer, int height)
 {
     assert (struct_pointer != NULL);
     assert ((*struct_pointer).pointer != NULL);

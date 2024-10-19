@@ -19,7 +19,9 @@ int ComparePointers (const char* first_string, const char* second_string, int fi
         SkipNonLetters (&second_char_ptr);
 
         if (first_char_ptr == first_string + first_length || second_char_ptr == second_string + second_length)
+        {
             break;
+        }
 
         if (CompareChar (*first_char_ptr, *second_char_ptr) != 0)
         {
