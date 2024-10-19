@@ -1,8 +1,6 @@
 #ifndef COMPARE_H
 #define COMPARE_H
 
-const int height = 7;
-
 struct inform
 {
     const char* pointer;

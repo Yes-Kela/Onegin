@@ -1,8 +1,6 @@
 #ifndef EXCHANGE_H
 #define EXCHANGE_H
 
-const int height = 7;
-
 struct inform
 {
     const char* pointer;
