@@ -8,132 +8,66 @@ void PrintStruct(struct inform* lines, int height);
 
 int main(void)
 {
-    FILE* file = fopen("evgeniy.txt", "rb");
+    FILE* file = fopen("evgeniy_onegin.txt", "rb");
     fseek(file, 0L, SEEK_END);
-    size_t length = ftell(file) / sizeof(char);
-    char* buffer = (char*) calloc(length, sizeof(char));
-
+    size_t length = ftell(file) / sizeof(char);                    // length - source length
+    char* buffer = (char*) calloc(length + 1, sizeof(char));       // alloc one more byte with \n
     fseek(file, 0L, SEEK_SET);
     fread(buffer, sizeof(char), length, file);
     fclose(file);
-    /*
-    printf("returned_fseek = %d\n", returned_fseek);
-    printf("length = %d\n", length);
-    printf("buffer address = %p\n", buffer);
-    printf("buffer: \n");
-    */
-    for (size_t i = 0; i < length; i++)
-    {
-        MyPrint(buffer[i]);
-    }
-    //printf("\n************************\n");
-    // Buffer if okay!
 
-
-    size_t counter = 0;
-    for (size_t i = 0; i < length; i++)
+    length++;
+    buffer[length - 1] = '\n';                                     // write down \n in the last byte
+    size_t height = 0;                                             // count number of strings by \n or \r
+    for (size_t i = 0; i < length; i++)                            // (consider them equivalent == all they're \n)
     {
-        if (buffer[i] == '\r' || buffer[i] == '\n')
+        if (buffer[i] == '\n')
         {
-            buffer[i] = '\0';
-            counter++;
-        }
+            height ++;
+            buffer[i] = '\0';                                      // they're all \0 now and the number of strings is number of \0
+        }                                                          // and we guarantee that there is \0 at the end
     }
-    size_t height = counter / 2;           // number of the strings
-    /*
-    printf("counter = %d\n", counter);
-    printf("height = %d\n", height);
-    printf("buffer address = %p\n", buffer);
-    printf("buffer: \n");
-    for (size_t i = 0; i < length; i++)
-    {
-        MyPrint(buffer[i]);
-    }
-    printf("\n************************\n");
-    // Changed buffer ('\r' and '\n' are changed into '\0') is okay!
-    */
+    // TODO count last line without \n in the end
+    // TODO rename structure inform
 
-    struct inform* lines = (struct inform*) calloc(height + 1, sizeof(struct inform));
+    struct inform* lines = (struct inform*) calloc(height, sizeof(struct inform));
 
     lines[0].pointer = buffer;
-    /*
-    printf("buffer address = %p\n", buffer);
-    printf("lines[0].pointer = %p\n", lines[0].pointer);
-    */
 
     size_t num_of_ends = 1;
     size_t len_of_string = 1;
 
-    //printf("  i  i<length-2   buffer[i-1]   buffer[i]   len_of_string   lines[num_of_ends].pointer   lines[num_of_ends-1].length   num_of_ends\n");
-    for (size_t i = 1; i < length - 1; i++)
+    for (size_t i = 1; i < length; i++)
     {
-        /*
-        printf("%3d     ", i);
-        printf("%d          ", (i < length - 2));
-        */
-        if (i < length - 2)
+        len_of_string++;
+        if (i < length - 1)
         {
-            //printf("%c           %c               ", buffer[i-1], buffer[i]);
-
-            if (buffer[i] != '\0' || buffer[i - 1] != '\0')
+            if (buffer[i] == '\0')
             {
-                //printf("%d", len_of_string);
-
-                len_of_string++;
-                /*
-                printf("(%d)                                                                               ", len_of_string);
-                printf("%d", num_of_ends);
-                printf("(%d) \n", num_of_ends);
-                */
-            }
-            else
-            {
-                //printf("%d", len_of_string);
-
-                len_of_string++;
-                /*
-                printf("(%d)                    ", len_of_string);
-                printf("%p", lines[num_of_ends].pointer);
-                */
-                lines[num_of_ends].pointer = buffer + i + 1;
-                /*
-                printf("(%p)                      ", lines[num_of_ends].pointer);
-                printf("%d", lines[num_of_ends].length);
-                */
                 lines[num_of_ends - 1].length = len_of_string;
-
-                //printf("(%d)                      ", lines[num_of_ends - 1].length);      // !!!! не заносятся в массив структур!!!
-
+                lines[num_of_ends].pointer = buffer + i + 1;
                 len_of_string = 0;
-
-                //printf("%d", num_of_ends);
-
                 num_of_ends++;
-
-                //printf("(%d)           \n", num_of_ends);
             }
         }
         else
         {
-            len_of_string += 2;
             lines[num_of_ends - 1].length = len_of_string;
-            //printf("\n");
         }
     }
 
     len_of_string = 0;
     num_of_ends = 0;
 
-    PrintStruct(lines, height + 1);
-
-    for (size_t i = 0; i < height; i++)
-    {
-        printf("%s\n", lines[i].pointer);
-    }
-
     SortPointers (lines, height);
 
-    PrintStruct(lines, height + 1);
+    printf("\n\n\n"
+    "***************************************************************************************************************"
+    "***************************************************************************************************************"
+    "Sorted text:"
+    "***************************************************************************************************************"
+    "***************************************************************************************************************"
+    "\n\n\n");
 
     for (size_t i = 0; i < height; i++)
     {
@@ -176,4 +110,3 @@ void PrintStruct(struct inform* lines, int height)
         printf("%p         %d\n", lines[i].pointer, lines[i].length);
     }
 }
-
