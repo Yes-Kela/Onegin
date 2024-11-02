@@ -42,13 +42,12 @@ int CompareChar (char first_char, char second_char)
     return (toupper(second_char) - toupper(first_char));
 }
 
-
 void SkipNonLetters (const char** ptr_to_char_ptr)
 {
     assert (ptr_to_char_ptr != NULL);
     assert (*ptr_to_char_ptr != NULL);
 
-    while (**ptr_to_char_ptr != '\n' && !isalpha (**ptr_to_char_ptr))
+    while (**ptr_to_char_ptr != '\0' && !isalpha (**ptr_to_char_ptr))
     {
         (*ptr_to_char_ptr)++;
     }

@@ -3,40 +3,24 @@
 #include <stdlib.h>
 #include "main.h"
 
-void MyPrint(char);
-void PrintStruct(struct inform* lines, int height);
+char* ReadText(char* buffer, size_t* length, size_t* height);
+void WriteText(const struct inform* lines, const size_t height);
+void MyPrint(char ch);
+
 
 int main(void)
 {
-    FILE* file = fopen("evgeniy_onegin.txt", "rb");
-    fseek(file, 0L, SEEK_END);
-    size_t length = ftell(file) / sizeof(char);                    // length - source length
-    char* buffer = (char*) calloc(length + 1, sizeof(char));       // alloc one more byte with \n
-    fseek(file, 0L, SEEK_SET);
-    fread(buffer, sizeof(char), length, file);
-    fclose(file);
+    // TODO count last line without \n in the end       DONE
+    // TODO rename structure inform                     DONE
+    size_t length = 1, height = 0;
+    char* buffer = (char*) calloc(length, sizeof(char));
 
-    length++;
-    buffer[length - 1] = '\n';                                     // write down \n in the last byte
-    size_t height = 0;                                             // count number of strings by \n or \r
-    for (size_t i = 0; i < length; i++)                            // (consider them equivalent == all they're \n)
-    {
-        if (buffer[i] == '\n')
-        {
-            height ++;
-            buffer[i] = '\0';                                      // they're all \0 now and the number of strings is number of \0
-        }                                                          // and we guarantee that there is \0 at the end
-    }
-    // TODO count last line without \n in the end
-    // TODO rename structure inform
+    buffer = ReadText(buffer, &length, &height);
 
     struct inform* lines = (struct inform*) calloc(height, sizeof(struct inform));
-
     lines[0].pointer = buffer;
-
     size_t num_of_ends = 1;
     size_t len_of_string = 1;
-
     for (size_t i = 1; i < length; i++)
     {
         len_of_string++;
@@ -55,31 +39,71 @@ int main(void)
             lines[num_of_ends - 1].length = len_of_string;
         }
     }
-
     len_of_string = 0;
     num_of_ends = 0;
 
     SortPointers (lines, height);
 
-    printf("\n\n\n"
-    "***************************************************************************************************************"
-    "***************************************************************************************************************"
-    "Sorted text:"
-    "***************************************************************************************************************"
-    "***************************************************************************************************************"
-    "\n\n\n");
-
-    for (size_t i = 0; i < height; i++)
-    {
-        printf("%s\n", lines[i].pointer);
-    }
-
-    printf("\n");
+    WriteText(lines, height);
 
     free(buffer);
     free(lines);
 
     return 0;
+}
+
+
+char* ReadText(char* buffer, size_t* length, size_t* height)
+{
+    assert(buffer);
+    assert(length);
+    assert(height);
+    //printf("ReadText(): buffer = %p\n", buffer);
+
+    FILE* file = fopen("evgeniy_onegin.txt", "rb");
+    fseek(file, 0L, SEEK_END);
+    *length = ftell(file) / sizeof(char);
+
+    buffer = (char*) realloc(buffer, (*length + 1)*sizeof(char));
+    for (size_t i = 0; i < *length + 1; i++)
+    {
+        buffer[i] = 0;
+    }
+    //printf("ReadText(): after realloc(): buffer = %p\n", buffer);
+
+    fseek(file, 0L, SEEK_SET);
+    fread(buffer, sizeof(char), *length, file);
+    fclose(file);
+    /*
+    for (size_t i = 0; i < *length; i++)
+    {
+        printf("buffer[%d]: %c\n", i, buffer[i]);
+    }
+    printf("ReadText(): after realloc(): buffer = %p\n", buffer);
+    // OK
+    */
+    (*length)++;
+    buffer[*length - 1] = '\n';
+    for (size_t i = 0; i < *length; i++)
+    {
+        if (buffer[i] == '\n')
+        {
+            (*height)++;
+            buffer[i] = '\0';
+        }
+    }
+    //printf("height = %u\n", *height);
+    return buffer;
+}
+
+void WriteText(const struct inform* lines, const size_t height)
+{
+    FILE* dest_file = fopen("new_onegin.txt", "wb");
+    for (size_t i = 0; i < height; i++)
+    {
+        fwrite((*(lines + i)).pointer, sizeof(char), (*(lines + i)).length, dest_file);
+    }
+    fclose(dest_file);
 }
 
 void MyPrint(char ch)
@@ -99,14 +123,5 @@ void MyPrint(char ch)
     else
     {
         printf("%c", ch);
-    }
-}
-
-void PrintStruct(struct inform* lines, int height)
-{
-    printf("\nlines.pointer      lines.length\n");
-    for (int i = 0; i < height; i++)
-    {
-        printf("%p         %d\n", lines[i].pointer, lines[i].length);
     }
 }

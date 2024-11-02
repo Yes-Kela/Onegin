@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "sort.h"
 
 void SortPointers (struct inform * struct_pointer, int height)
@@ -20,8 +21,6 @@ void SortPointers (struct inform * struct_pointer, int height)
             {
                 ExchangePointers (struct_pointer + index, struct_pointer + index + 1);
             }
-
-            else { ; }
         }
     }
 
