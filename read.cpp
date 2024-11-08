@@ -3,23 +3,18 @@
 #include <stdio.h>
 #include "read.h"
 
-char* ReadText(char* buffer, size_t* length, size_t* height)
+char* ReadText(size_t* length, size_t* num_of_lines)
 {
-    assert(buffer);
     assert(length);
-    assert(height);
+    assert(num_of_lines);
 
     FILE* file = fopen("evgeniy_onegin.txt", "rb");
     fseek(file, 0L, SEEK_END);
     *length = ftell(file) / sizeof(char);
-
-    buffer = (char*) realloc(buffer, (*length + 1)*sizeof(char));
-    for (size_t i = 0; i < *length + 1; i++)
-    {
-        buffer[i] = 0;
-    }
-
     fseek(file, 0L, SEEK_SET);
+
+    char* buffer = (char*) calloc((*length + 1), sizeof(char));
+
     fread(buffer, sizeof(char), *length, file);
     fclose(file);
 
@@ -29,7 +24,7 @@ char* ReadText(char* buffer, size_t* length, size_t* height)
     {
         if (buffer[i] == '\n')
         {
-            (*height)++;
+            (*num_of_lines)++;
             buffer[i] = '\0';
         }
     }

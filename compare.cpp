@@ -37,6 +37,36 @@ int ComparePointers (const char* first_string, const char* second_string, int fi
     return -1;
 }
 
+int ComparePointersBack (const char* first_string, const char* second_string, int first_length, int second_length)
+{
+    assert ( first_string != NULL);
+    assert (second_string != NULL);
+
+    const char* first_char_ptr = first_string + first_length - 1;
+    const char* second_char_ptr = second_string + second_length - 1;
+
+    for (; first_char_ptr >= first_string && second_char_ptr >= second_string;
+         first_char_ptr--, second_char_ptr--)
+    {
+        if (first_char_ptr == 0 || second_char_ptr == 0)
+        {
+            break;
+        }
+
+        if (CompareChar(*first_char_ptr, *second_char_ptr) != 0)
+        {
+            return (CompareChar(*first_char_ptr, *second_char_ptr));
+        }
+    }
+
+    if (first_char_ptr == 0)
+    {
+        return 1;
+    }
+
+    return -1;
+}
+
 int CompareChar (char first_char, char second_char)
 {
     return (toupper(second_char) - toupper(first_char));
