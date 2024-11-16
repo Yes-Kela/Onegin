@@ -11,14 +11,19 @@ int main(void)
     char* buffer = ReadText(&length, &num_of_lines);
 
     struct line_t* lines = (struct line_t*) calloc(num_of_lines, sizeof(struct line_t));
-    Structure(lines, buffer, length);
+    Structure(lines, buffer, length, num_of_lines);
 
-    SortPointers (lines, num_of_lines, &ComparePointers);
+    SortPointers(lines, num_of_lines, &ComparePointersBack);
+
+    for (size_t i = 0; i < length; i++)
+    {
+        printf("%s %d %p\n", lines[i].pointer, lines[i].length, lines[i].pointer);
+    }
 
     WriteText(lines, num_of_lines);
 
-    free(buffer);
     free(lines);
+    free(buffer);
 
     return 0;
 }

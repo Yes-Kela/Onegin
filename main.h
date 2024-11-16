@@ -8,7 +8,7 @@ struct line_t
 };
 
 char* ReadText(size_t* length, size_t* num_of_lines);
-void Structure(struct line_t* lines, const char* buffer, const size_t length);
+void Structure(struct line_t* lines, char* buffer, const size_t length, const size_t num_of_lines);
 void SortPointers (struct line_t* struct_pointer, int num_of_lines,
                    int (*Compare)(const char* first_string, const char* second_string, int first_length, int second_length));
 int ComparePointers (const char* first_string, const char* second_string, int first_length, int second_length);

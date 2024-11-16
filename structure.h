@@ -7,6 +7,6 @@ struct line_t
     int length;
 };
 
-void Structure(struct line_t* lines, const char* buffer, const size_t length);
+void Structure(struct line_t* lines, char* buffer, const size_t length, const size_t num_of_lines);
 
 #endif /*STRUCTURE_H*/
