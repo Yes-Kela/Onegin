@@ -8,7 +8,7 @@ char* ReadText(size_t* length, size_t* num_of_lines)
     assert(length);
     assert(num_of_lines);
 
-    FILE* file = fopen("Byron.txt", "rb");
+    FILE* file = fopen("evgeniy_onegin.txt", "rb");
     fseek(file, 0L, SEEK_END);
     *length = ftell(file) / sizeof(char);
     fseek(file, 0L, SEEK_SET);
